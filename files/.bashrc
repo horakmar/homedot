@@ -50,7 +50,7 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-: # Prompt is set by /etc/profile.d/prompt.sh
+PS1=\[\e[93m\]\u\[\e[00m\]@\[\e[92m\]\h\[\e[00m\]:\[\e[96m\]\w\[\e[00m\]$
 else
 : # Prompt is set by /etc/profile.d/prompt.sh
 fi
