@@ -1,0 +1,24 @@
+---
+- hosts: localhost
+  tasks:
+  - name: "Copy all config files"
+    copy:
+      src: "{{ item }}"
+      dest: "~/{{ item }}"
+    loop:
+    - ".bash_aliases"
+    - ".bashrc"
+    - "byobu_bashrc"
+    - ".config"
+    - ".dir_colors"
+    - ".gitconfig"
+    - ".gvimrc"
+    - ".kubectl_aliases"
+    - ".rpmmacros"
+    - ".vimrc"
+    - ".Xdefaults"
+  - name: "Unpack .vim dir"
+    unarchive:
+      src: .vim.tar.gz
+      dest: "~"
+      creates: "~/.vim/bundle/nerdtree"
