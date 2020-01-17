@@ -1,15 +1,13 @@
 ---
 - hosts: localhost
   tasks:
-  - name: "Copy all config files"
+  - name: "Copy config files"
     copy:
       src: "{{ item }}"
       dest: "~/{{ item }}"
     loop:
     - ".bash_aliases"
     - ".bashrc"
-    - "byobu_bashrc"
-    - ".config"
     - ".dir_colors"
     - ".gitconfig"
     - ".gvimrc"
@@ -17,6 +15,15 @@
     - ".rpmmacros"
     - ".vimrc"
     - ".Xdefaults"
+
+  - name: "Copy config dirs"
+    copy:
+      src: "{{ item }}"
+      dest: "~"
+    loop:
+    - ".config"
+    - ".byobu"
+
   - name: "Unpack .vim dir"
     unarchive:
       src: .vim.tar.gz
