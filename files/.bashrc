@@ -96,6 +96,14 @@ if [ -f ~/.kubectl_aliases ]; then
     . ~/.kubectl_aliases
 fi
 
+# Read and export all variables in .env
+if [ -f ~/.env ]; then
+    source ~/.env
+	vars=$(sed -n '/^[a-z0-9A-Z_-]\{1,\}=/s/=.*//p' ~/.env)
+	export $vars
+	unset vars
+fi
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
