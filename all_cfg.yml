@@ -23,6 +23,7 @@
     loop:
     - ".config"
     - ".byobu"
+    - ".ssh"
 
   - name: "Unpack .vim dir"
     unarchive:

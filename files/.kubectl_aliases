@@ -823,13 +823,13 @@ kcn ()
 # Exec shell in pod
 kexe ()
 {
-    kubectl exec -ti $@ /bin/bash || kubectl exec -ti $@ /bin/sh
+    kubectl exec -ti $@ -- /bin/bash || kubectl exec -ti $@ -- /bin/sh
 }
 
 # Exec shell in pod in kube-system namespace
 ksexe ()
 {
-    kubectl exec -n kube-system -ti $@ /bin/bash || kubectl exec -n kube-system -ti $@ /bin/sh
+    kubectl exec -n kube-system -ti $@ -- /bin/bash || kubectl exec -n kube-system -ti $@ -- /bin/sh
 }
 
 # Show secret contents
