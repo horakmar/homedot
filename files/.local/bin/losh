@@ -1,0 +1,110 @@
+#!/usr/bin/perl
+
+# Skript prevadi dlouha jmena na kratka a naopak
+
+#=================================================
+# Konstanty
+#=================================================
+our %stol = ('t' => '0ete', 'g' => '0plg', 'p' => '0phd', 'd' => '6edu');
+# our %ltos = ('ete' => 't', 'plg' => 'g', 'phd' => 'p', 'edu' => 'd');
+our %ltos;
+our $slist = '';
+our $llist = '';
+our $dcprefix = 'svcz';
+our $domain = ".cezdata.corp";
+
+#=================================================
+# Funkce
+#=================================================
+sub Usage {
+	$script_name = $0;
+    print <<"EOF";
+
+Pouziti:
+        $script_name [-s] [-l] [-d|-D] [<domain>] [-n <name>] [-u]
+        $script_name -h
+
+Prevadi dloha jmena na kratka a naopak. Orezava ci pridava domenu
+
+Parametry:
+  -s ... prevod dlouhe -> kratke [default]
+  -l ... prevod kratke -> dlouhe
+  -d ... odebrat domenu [default .cezdata.corp]
+  -D ... pridat domenu [default .cezdata.corp]
+  -n <name> ... prevest jmeno name [jinak STDIN]
+  -u ... prevest sve hostname
+
+EOF
+    exit 1;
+}
+
+sub Prevod {
+    $_ = shift;
+    if($chdomain > 0){
+        s/$domain//;
+    }
+
+    if($direction == 1){
+        if(s/($slist)([prs])([a-z])(\d{1,2})/%-change-%/){
+            my $n = (length($4) < 2) ? '0'.$4 : $4;
+            my $r = $dcprefix.$stol{$1}.$2.$3.$n;
+            $r .= $domain if($chdomain == 2);
+            s/%-change-%/$r/;
+        }
+    }elsif($direction == 0){
+        if(s/$dcprefix($llist)([prs])([a-z])(\d\d)/%-change-%/){
+            my $n = (substr($4, 0, 1) eq '0') ? substr($4, 1, 1) : $4;
+            my $r = $ltos{$1}.$2.$3.$n;
+            $r .= $domain if($chdomain == 2);
+            s/%-change-%/$r/;
+        }
+    }
+    return $_;
+}
+
+#=================================================
+# Main
+#=================================================
+
+# Get commandline parameters
+our $direction = 0; # dlouhe -> kratke
+our $verbose = 0;
+our $chdomain = 0;
+our $name = '';
+my @arg = ();
+GetP: while($_ = shift){
+	SW: {
+		/-h/ && do { &Usage(); last SW; };
+		/-s/ && do { $direction = 0; last SW; };
+		/-l/ && do { $direction = 1; last SW; };
+		/(-d|-D)/ && do { $chdomain = ($_ eq '-d') ? 1 : 2;
+                     $_ = shift;
+                     redo SW if(substr($_, 0, 1) eq '-');
+                     $domain = $_ if(length($_) > 0);
+                     last SW };
+        /-n/ && do { $name = shift; };
+        /-u/ && do { $name = qx|admname| };
+		push(@arg, $_);
+	}
+}
+
+$domain = '.' . $domain if($chdomain > 0 && substr($domain, 0, 1) ne '.');
+
+foreach my $i (keys(%stol)){
+    $ltos{$stol{$i}} = $i;
+    $slist .= "$i|";
+    $llist .= $stol{$i} . '|';
+}
+chop $slist;
+chop $llist;
+
+if($name ne ''){
+    chomp $name;
+    $name = &Prevod($name);
+    print "$name\n";
+}else{
+    while(<STDIN>){
+        print &Prevod($_);
+    }
+}
+__END__

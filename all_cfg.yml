@@ -1,7 +1,7 @@
 ---
 - hosts: localhost
   tasks:
-  - name: "Copy config files"
+  - name: "Copy files"
     copy:
       src: "{{ item }}"
       dest: "~/{{ item }}"
@@ -16,7 +16,7 @@
     - ".vimrc"
     - ".Xdefaults"
 
-  - name: "Copy config dirs"
+  - name: "Copy dirs"
     copy:
       src: "{{ item }}"
       dest: "~"
@@ -24,6 +24,7 @@
     - ".config"
     - ".byobu"
     - ".ssh"
+    - ".local"
 
   - name: "Unpack .vim dir"
     unarchive:
