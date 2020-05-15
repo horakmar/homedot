@@ -24,10 +24,15 @@
     - ".config"
     - ".byobu"
     - ".ssh"
-    - ".local"
 
   - name: "Unpack .vim dir"
     unarchive:
       src: .vim.tar.gz
       dest: "~"
       creates: "~/.vim/bundle/nerdtree"
+
+  - name: "Unpack .local dir"
+    unarchive:
+      src: .local.tar.gz
+      dest: "~"
+      creates: "~/.local/bin/crt"
