@@ -582,6 +582,7 @@ alias kgssowwn='kubectl get statefulsets -o=wide --watch --namespace'
 alias kgsvowwn='kubectl get service -o=wide --watch --namespace'
 alias kgvaowwn='kubectl get volumeattachment -o=wide --watch --namespace'
 alias krmpfo='kubectl delete pod --force --grace-period=0'
+alias kww='watch "kubectl get pod -o wide"'
 
 ## Kubectl functions
 ####################
