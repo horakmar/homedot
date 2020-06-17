@@ -9,6 +9,7 @@
     - ".bash_aliases"
     - ".bashrc"
     - ".dir_colors"
+    - ".env"
     - ".gitconfig"
     - ".gvimrc"
     - ".kubectl_aliases"
