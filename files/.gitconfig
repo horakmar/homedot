@@ -7,6 +7,7 @@
   br = branch
   ci = commit
   st = status
+  cdi = diff --cached
   unstage = reset HEAD --
   au-t = !git config --global user.name 'Tomas Pipota' && git config --global user.email 'tomas.pipota@cez.cz'
   au-m = !git config --global user.name 'Martin Horak' && git config --global user.email 'horak.martin@gmail.com'
