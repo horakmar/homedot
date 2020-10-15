@@ -74,7 +74,7 @@ endfunction
 highlight BadWhitespace ctermbg=red guibg=darkred
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
-" Python with virtualenv support
+" Python with virtualenv support - requires vim-nox package on Ubuntu
 py3 << EOF
 import os.path
 import sys
