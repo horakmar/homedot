@@ -34,7 +34,7 @@ function SetYaml()
     setlocal expandtab
 endfunction
 
-" Python PEP 8 indentation                                                                                                                        
+" Python PEP 8 indentation
 au BufNewFile,BufRead *.py call SetPython()
 function SetPython()
     setlocal tabstop=4
