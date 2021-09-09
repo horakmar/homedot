@@ -1,6 +1,12 @@
 ---
 - hosts: localhost
   tasks:
+  - name: Ensude tmp dir
+    file:
+      path: ~/tmp
+      state: directory
+      mode: '0755'
+
   - name: "Copy files"
     copy:
       src: "{{ item }}"
