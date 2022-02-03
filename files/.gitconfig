@@ -8,13 +8,8 @@
   ci = commit
   st = status
   cdi = diff --cached
+  sdi = diff --cached
   unstage = reset HEAD --
-  au-t = !git config --global user.name 'Tomas Pipota' && git config --global user.email 'tomas.pipota@cez.cz'
-  au-m = !git config --global user.name 'Martin Horak' && git config --global user.email 'horak.martin@gmail.com'
-  au-l = !git config --global user.name 'Libor Borek' && git config --global user.email 'libor.borek@cez.cz'
-  reauthor-m = !git commit --amend --author='Martin Horak <horak.martin@gmail.com>' --no-edit
-  reauthor-t = !git commit --amend --author='Tomas Pipota <tomas.pipota@cez.cz>' --no-edit
-  reauthor-l = !git commit --amend --author='Libor Borek <libor.borek@cez.cz>' --no-edit
 [user]
 	name = Martin Horak
 	email = horak.martin@gmail.com
