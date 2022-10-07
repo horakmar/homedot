@@ -5,5 +5,3 @@
 nebo
 
 `apply.sh`
-
-Test new token
