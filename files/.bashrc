@@ -126,3 +126,16 @@ fi
 if [ -f ~/.bash_prompt ]; then
     export PROMPT_COMMAND="source ~/.bash_prompt"
 fi
+
+# Basic functions
+
+# Get credential
+_getcred() {
+    if [ -r $HOME/.cifs/corp ]; then
+        sed -ne "/$1/ s/.*=//p" $HOME/.cifs/corp
+    elif [ "$1" == 'user' ]; then
+        echo horakmar
+    else
+        echo not_found
+    fi
+}

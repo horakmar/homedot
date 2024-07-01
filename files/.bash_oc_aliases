@@ -504,11 +504,6 @@ otb()
     oc exec -ti -n $TOOLBOX_NS $TOOLBOX_POD -- /bin/bash
 }
 
-# Get credential
-_getcred() {
-    sed -ne "/$1/ s/.*=//p" $HOME/.cifs/corp
-}
-
 # Login to cluster
 olog() {
     export KUBECONFIG=$HOME/.kube/config_oc${1};
