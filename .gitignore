@@ -1,3 +1,4 @@
 *cache*
 *.log
 *.tmp
+**/.bash_history

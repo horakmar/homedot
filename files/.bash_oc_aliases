@@ -506,8 +506,18 @@ otb()
 
 # Login to cluster
 olog() {
-    export KUBECONFIG=$HOME/.kube/config_oc${1};
-    oc login https://api.oc${1}.cc.corp:6443 -u $(_getcred user) -p $(_getcred password) && OC_NAME=oc${1} && PPS1=$PS1
+    export KUBECONFIG=$HOME/.kube/config_oc${1}
+    if [ -n "$(_getcred user)" ]; then
+        user="-u $(_getcred user)"
+    else
+        user=""
+    fi
+    if [ -n "$(_getcred password)" ]; then
+        password="-p $(_getcred password)"
+    else
+        password=""
+    fi
+    oc login https://api.oc${1}.cc.corp:6443 $user $password && OC_NAME=oc${1} && PPS1=$PS1
 }
 
 ologout() {
