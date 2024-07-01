@@ -7,13 +7,6 @@ vncvia() {
     vncviewer -via $1 localhost:0
 }
 
-# Kubernetes
-kuba () {
-    kubectl $@ --all-namespaces
-}
-
-# Rest is in .kubectl_aliases
-
 # Docker
 alias dockrm='docker rm $(docker ps -qa --no-trunc --filter "status=exited")'
 alias dockrmi='docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
@@ -23,12 +16,6 @@ dockertun () {
     export DOCKER_HOST=tcp://localhost:2375
     echo "Using docker server at tcp://$1:2375 via SSH tunnel."
 }
-
-# Salt
-alias sarp='salt-call saltutil.refresh_pillar'
-alias sapi='salt-call pillar.items'
-alias sato='salt-call state.show_top'
-alias saap='salt-call state.apply'
 
 # Various useful aliases
 alias psl="ps --width 300 axf | less -S"
@@ -90,3 +77,7 @@ alias wifiadr="sudo dhcpcd wlan0"
 
 # Syntax highlight
 alias ccat="pygmentize -g"
+
+# Python development
+alias venv="source .venv/bin/activate"
+alias pyco="jupyter console"

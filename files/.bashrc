@@ -20,6 +20,11 @@ HISTFILESIZE=2000
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
@@ -33,6 +38,10 @@ case "$TERM" in
     xterm-color) color_prompt=yes;;
     xterm-256color) color_prompt=yes;;
 esac
+
+if [ -f ~/.bash_colors ]; then
+    . ~/.bash_colors
+fi
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
@@ -92,8 +101,8 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-if [ -f ~/.kubectl_aliases ]; then
-    . ~/.kubectl_aliases
+if [ -f ~/.bash_oc_aliases ]; then
+    . ~/.bash_oc_aliases
 fi
 
 # Read and export all variables in .env
@@ -109,7 +118,11 @@ fi
 # sources /etc/bash.bashrc).
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
-    which kubectl >/dev/null && source <(kubectl completion bash)
+    which oc >/dev/null && source <(oc completion bash)
+    which helm >/dev/null && source <(helm completion bash)
 fi
+[ -r /home/horakmar/.byobu/prompt ] && . ~/.byobu/prompt   #byobu-prompt#
 
-[ -r /home/horakmar/.byobu/prompt ] && . /home/horakmar/.byobu/prompt   #byobu-prompt#
+if [ -f ~/.bash_prompt ]; then
+    export PROMPT_COMMAND="source ~/.bash_prompt"
+fi
