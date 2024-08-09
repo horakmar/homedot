@@ -2,17 +2,8 @@
 history -a
 
 if [ -n "$OC_NAME" ]; then
-    case $OC_NAME in
-        'ocd')
-            OC_COLOR=117
-            ;;
-        'ocp')
-            OC_COLOR=202
-            ;;
-        'oce')
-            OC_COLOR=227
-    esac
-
-    OC_CTX=$(~/.local/bin/oc config current-context)
-    PS1="[$(fgc ${OC_NAME}/${OC_CTX%%/*} $OC_COLOR)] $PPS1"
+    if ! oc whoami >/dev/null 2>&1; then
+        unset OC_NAME
+        PS1=$PPS1
+    fi
 fi

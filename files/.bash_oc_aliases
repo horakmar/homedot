@@ -44,7 +44,6 @@ alias ormjo='oc delete jobs'
 alias ogno='oc get nodes'
 alias odno='oc describe nodes'
 alias ogns='oc get projects'
-alias opr='oc project'
 alias oprs='oc projects'
 alias ogpr='oc get projects'
 alias odns='oc describe projects'
@@ -476,8 +475,11 @@ ocn()
     else
         ns=$1;
     fi;
-    oc config set-context $(kubectl config current-context) --namespace $ns
+    oc project $ns
+    PS1="[$(fgc ${OC_NAME}/${ns} $(ocolor $OC_NAME))]\n$PPS1"
+
 }
+alias opr='ocn'
 
 # Exec shell in pod
 oexe()
@@ -504,6 +506,22 @@ otb()
     oc exec -ti -n $TOOLBOX_NS $TOOLBOX_POD -- /bin/bash
 }
 
+# Get color for specific OpenShift
+ocolor() {
+  case $1 in
+      'ocd')
+          echo 117
+          ;;
+      'ocp')
+          echo 202
+          ;;
+      'oce')
+          echo 227
+          ;;
+  esac
+  echo 231
+}
+
 # Login to cluster
 olog() {
     export KUBECONFIG=$HOME/.kube/config_oc${1}
@@ -517,12 +535,28 @@ olog() {
     else
         password=""
     fi
-    oc login https://api.oc${1}.cc.corp:6443 $user $password && OC_NAME=oc${1} && PPS1=$PS1
+
+    if oc login https://api.oc${1}.cc.corp:6443 $user $password ; then
+        OC_NAME=oc${1}
+        [ -z "$PPS1" ] && PPS1=$PS1 
+        OC_CTX=$(oc config current-context)
+        PS1="[$(fgc ${OC_NAME}/${OC_CTX%%/*} $(ocolor $OC_NAME))]\n$PPS1"
+    fi
 }
 
 ologout() {
     oc logout && unset OC_NAME;
     PS1=$PPS1
+}
+
+# Search for DevWorkspace
+odev() {
+    for ns in $(oc get project -o "custom-columns=NAME:metadata.name" --no-headers=true); do
+        if [[ $(oc get devworkspace -n $ns -o go-template='{{len .items}}' 2>/dev/null) -gt 0 ]]; then
+            echo "Namespace: $ns";
+            oc get devworkspace -n $ns;
+        fi
+    done
 }
 
 alias ologd='olog d'
