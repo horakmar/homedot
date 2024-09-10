@@ -544,9 +544,17 @@ olog() {
     fi
 }
 
+# Set prompt to OC context
+olst() {
+    OC_NAME=oc${1}
+    [ -z "$PPS1" ] && PPS1=$PS1
+    OC_CTX=$(oc config current-context)
+    PS1="[$(fgc ${OC_NAME}/${OC_CTX%%/*} $(ocolor $OC_NAME))]\n$PPS1"
+}
+
 ologout() {
     oc logout && unset OC_NAME;
-    PS1=$PPS1
+    [ -n "$PPS1" ] && PS1=$PPS1
 }
 
 # Search for DevWorkspace
