@@ -544,17 +544,9 @@ olog() {
     fi
 }
 
-# Set prompt to OC context
-olst() {
-    OC_NAME=oc${1}
-    [ -z "$PPS1" ] && PPS1=$PS1
-    OC_CTX=$(oc config current-context)
-    PS1="[$(fgc ${OC_NAME}/${OC_CTX%%/*} $(ocolor $OC_NAME))]\n$PPS1"
-}
-
 ologout() {
     oc logout && unset OC_NAME;
-    [ -n "$PPS1" ] && PS1=$PPS1
+    PS1=$PPS1
 }
 
 # Search for DevWorkspace
@@ -575,3 +567,32 @@ alias ologp='olog p'
 export KUBECTL_COMMAND="oc"
 alias oc='kubecolor'
 alias ooc='~/.local/bin/oc'
+
+# Bash completion
+_opods() {
+    local cur prev opts
+    COMPREPLY=()
+    if [[ -n "$OC_NAME" ]]; then
+        cur="${COMP_WORDS[COMP_CWORD]}"
+        opts=$(oc get pods -o jsonpath='{.items[*].metadata.name}')
+
+        COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
+    fi
+}
+
+_odeployments() {
+    local cur prev opts
+    COMPREPLY=()
+    if [[ -n "$OC_NAME" ]]; then
+        cur="${COMP_WORDS[COMP_CWORD]}"
+        opts=$(oc get deployments -o jsonpath='{.items[*].metadata.name}')
+
+        COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
+    fi
+}
+
+complete -F _opods oexe
+complete -F _opods ormp
+complete -F _opods ogp
+complete -F _odeployments ormde
+complete -F _odeployments ogde

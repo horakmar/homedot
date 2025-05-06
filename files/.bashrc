@@ -5,6 +5,9 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+# Load functions
+[ -f $HOME/.bash_functions ] && . $HOME/.bash_functions
+
 # don't put duplicate lines in the history. See bash(1) for more options
 # ... or force ignoredups and ignorespace
 HISTCONTROL=ignoredups:ignorespace
@@ -21,9 +24,10 @@ HISTFILESIZE=2000
 shopt -s checkwinsize
 
 # set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
-fi
+[ -d "$HOME/.local/bin" ] && pathadd "$HOME/.local/bin" "pre"
+
+# add Maven info path if available
+[ -n "$M2_HOME" ] && pathadd "$M2_HOME/bin"
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -37,6 +41,7 @@ fi
 case "$TERM" in
     xterm-color) color_prompt=yes;;
     xterm-256color) color_prompt=yes;;
+    screen-256color) color_prompt=yes;;
 esac
 
 if [ -f ~/.bash_colors ]; then
@@ -60,9 +65,9 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-PS1="\[\e[93m\]\u\[\e[00m\]@\[\e[92m\]\h\[\e[00m\]:\[\e[96m\]\w\[\e[00m\]$ "
+  PS1="\[\e[93m\]\u\[\e[00m\]@\[\e[92m\]\h\[\e[00m\]:\[\e[96m\]\w\[\e[00m\]$ "
 else
-: # Prompt is set by /etc/profile.d/prompt.sh
+  : # Prompt is set by /etc/profile.d/prompt.sh
 fi
 unset color_prompt force_color_prompt
 
@@ -93,10 +98,6 @@ alias la='ls -A'
 alias l='ls -CF'
 
 # Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
@@ -105,10 +106,10 @@ if [ -f ~/.bash_oc_aliases ]; then
     . ~/.bash_oc_aliases
 fi
 
-# Read and export all variables in .env
-if [ -f ~/.env ]; then
-    source ~/.env
-	vars=$(sed -n '/^[a-z0-9A-Z_-]\{1,\}=/s/=.*//p' ~/.env)
+# Read and export all variables in .bash_env
+if [ -f ~/.bash_env ]; then
+    source ~/.bash_env
+	vars=$(sed -n '/^[a-z0-9A-Z_-]\{1,\}=/s/=.*//p' ~/.bash_env)
 	export $vars
 	unset vars
 fi
@@ -127,13 +128,5 @@ if [ -f ~/.bash_prompt ]; then
     export PROMPT_COMMAND="source ~/.bash_prompt"
 fi
 
-# Basic functions
-
-# Get credential
-_getcred() {
-    if [ -r $HOME/.cifs/corp ]; then
-        sed -ne "/$1/ s/.*=//p" $HOME/.cifs/corp
-    elif [ "$1" == 'user' ]; then
-        echo horakmar
-    fi
-}
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
