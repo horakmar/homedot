@@ -8,6 +8,14 @@
 # Load functions
 [ -f $HOME/.bash_functions ] && . $HOME/.bash_functions
 
+# Read and export all variables in .bash_env
+if [ -f ~/.bash_env ]; then
+    source ~/.bash_env
+	vars=$(sed -n '/^[a-z0-9A-Z_-]\{1,\}=/s/=.*//p' ~/.bash_env)
+	export $vars
+	unset vars
+fi
+
 # don't put duplicate lines in the history. See bash(1) for more options
 # ... or force ignoredups and ignorespace
 HISTCONTROL=ignoredups:ignorespace
@@ -104,14 +112,6 @@ fi
 
 if [ -f ~/.bash_oc_aliases ]; then
     . ~/.bash_oc_aliases
-fi
-
-# Read and export all variables in .bash_env
-if [ -f ~/.bash_env ]; then
-    source ~/.bash_env
-	vars=$(sed -n '/^[a-z0-9A-Z_-]\{1,\}=/s/=.*//p' ~/.bash_env)
-	export $vars
-	unset vars
 fi
 
 # enable programmable completion features (you don't need to enable
