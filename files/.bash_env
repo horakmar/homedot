@@ -9,6 +9,6 @@ NODE_EXTRA_CA_CERTS="$HOME/pki/cez-ca-chain.crt"
 NVM_DIR="$HOME/.nvm"
 
 JAVA_HOME="/usr/lib/jvm/default-runtime"
-M2_HOME="/usr/local/share/apache-maven-3.9.9"
+M2_HOME="/usr/local/share/maven"
 
 # DOCKER_HOST=tcp://dind.infra.cl.corp:2375
