@@ -594,5 +594,6 @@ _odeployments() {
 complete -F _opods oexe
 complete -F _opods ormp
 complete -F _opods ogp
+complete -F _opods olo
 complete -F _odeployments ormde
 complete -F _odeployments ogde
