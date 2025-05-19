@@ -523,15 +523,16 @@ ocolor() {
 }
 
 # Login to cluster
+#   Log to OCD as admin: olog d qs
 olog() {
     export KUBECONFIG=$HOME/.kube/config_oc${1}
-    if [ -n "$(_getcred user)" ]; then
-        user="-u $(_getcred user)"
+    if [ -n "$(_getcred ${2}user)" ]; then
+        user="-u $(_getcred ${2}user)"
     else
         user=""
     fi
-    if [ -n "$(_getcred password)" ]; then
-        password="-p $(_getcred password)"
+    if [ -n "$(_getcred ${2}password)" ]; then
+        password="-p $(_getcred ${2}password)"
     else
         password=""
     fi

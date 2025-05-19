@@ -42,9 +42,15 @@ dockertun () {
 
 # Get credentials
 _getcred() {
-    if [ -r $HOME/.cifs/corp ]; then
+    if [[ "$1" == qs* ]]; then
+        if [[ -r $HOME/.cifs/corp_qs ]]; then
+            sed -ne "/${1#qs}/ s/.*=//p" $HOME/.cifs/corp_qs
+        elif [[ $1 == 'qsuser' ]]; then
+            echo 'qshorakmar'
+        fi
+    elif [[ -r $HOME/.cifs/corp ]]; then
         sed -ne "/$1/ s/.*=//p" $HOME/.cifs/corp
-    elif [ "$1" == 'user' ]; then
+    elif [[ "$1" == 'user' ]]; then
         echo horakmar
     fi
 }
